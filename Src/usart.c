@@ -53,6 +53,14 @@ uint8_t APP_DATA[APP_DATA_LEN] __attribute__ ((at(0x20004000)));
 
 UART_HandleTypeDef huart2;
 
+int fputc(int ch, FILE *f)
+{
+    while (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_TXE) == RESET);
+    huart2.Instance->TDR = (uint8_t)ch;
+
+    return ch;
+}
+
 /* USART2 init function */
 
 void MX_USART2_UART_Init(void)

@@ -58,6 +58,8 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+void Show_Menu(void);
+
 
 /* USER CODE END PFP */
 
@@ -98,6 +100,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_NVIC_EnableIRQ(USART2_IRQn);
   HAL_UART_Receive_IT(&huart2, UartRec, 1);
+  Show_Menu();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,6 +112,8 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+
+      
 #define WK_FLASH_SIZE           128                                         // flash大小（KB）
 #define WK_FLASH_PAGE_SIZE      2                                           // 扇页大小（KB）
 #define WK_FLASH_PAGE_NUM       (WK_FLASH_SIZE/WK_FLASH_PAGE_SIZE)                // 扇页数量
@@ -143,7 +149,7 @@ int main(void)
             temp = 0;
             for (uint8_t j=0; j<8; j++)
             {
-                temp += (uint64_t)APP_DATA[i*8+j] << (j*8);
+                temp += (uint64_t)APP_DATA[i*8+(7-j)] << (j*8);
             }
             HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, WK_FLASH_DATA_ADDR+i*8, temp); // 写入
         }
@@ -287,6 +293,16 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+void Show_Menu(void)
+{
+      printf("\r\n——————串口下载-----------\r\n");
+      printf("|                            |\r\n");
+      printf("|  1、准备下载               |\r\n");
+      printf("|  2、跳转至新程序           |\r\n");
+      printf("|  3、设置为直接跳转至程序   |\r\n");
+      printf("|                            |\r\n");
+      printf("------------------------------\r\n\r\n");
+}
 /* USER CODE END 4 */
 
 /**
